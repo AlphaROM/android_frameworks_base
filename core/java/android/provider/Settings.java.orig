@@ -3313,14 +3313,29 @@ public final class Settings {
          */
         public static final String VOLUME_KEYS_CONTROL_RING_STREAM = "volume_keys_control_ring_stream";
 
-	
-	     /**
+<<<<<<< HEAD
+=======
+	/**
+         * Force dual panel for settings
+         */
+        public static final String FORCE_DUAL_PANEL = "force_dualpanel"; 
+
+	/**
+         * Holds the text for the Carrier label. An empty string
+         * will bring the default text back.
+         * @hide
+         */
+        public static final String CUSTOM_CARRIER_LABEL = "custom_carrier_label";
+
+	/**
          * @hide
          * Show Wifi network name in notification shade
          * 0 - don't show
          * 1 - show
          */
         public static final String NOTIFICATION_SHOW_WIFI_SSID = "notification_show_wifi_ssid";  
+
+>>>>>>> 248b68e... [Frameworksbase] Port Add Wifi name to notification drawer (1/2)
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.

@@ -257,6 +257,11 @@ public class PhoneStatusBarView extends PanelBar {
             panel.setAlpha(alpha);
         }
 
+<<<<<<< HEAD
         mBar.updateCarrierLabelVisibility(false);
+=======
+	updateBackgroundAlpha();
+        mBar.updateCarrierAndWifiLabelVisibility(false); 
+>>>>>>> 248b68e... [Frameworksbase] Port Add Wifi name to notification drawer (1/2)
     }
 }
