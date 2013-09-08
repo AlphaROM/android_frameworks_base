@@ -28,7 +28,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Rect;
@@ -70,15 +69,6 @@ public class CircleBattery extends ImageView implements BatteryController.Batter
     private Paint   mPaintGray;
     private Paint   mPaintSystem;
     private Paint   mPaintRed;
-
-
-    private int batteryStyle;
-
-    private int mCircleColor;
-    private int mCircleTextColor;
-    private int mCircleAnimSpeed;
-    private int mCircleReset;
-
 
     // runnable to invalidate view via mHandler.postDelayed() call
     private final Runnable mInvalidate = new Runnable() {
@@ -128,9 +118,6 @@ public class CircleBattery extends ImageView implements BatteryController.Batter
 
         mContext = context;
         mHandler = new Handler();
-
-        batteryStyle = (Settings.System.getInt(mContext.getContentResolver(),
-                    Settings.System.STATUSBAR_BATTERY_ICON, 0));
 
         mObserver = new SettingsObserver(mHandler);
 
@@ -189,14 +176,12 @@ public class CircleBattery extends ImageView implements BatteryController.Batter
     }
 
     public void updateSettings() {
-        batteryStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
+        int batteryStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
                     Settings.System.STATUS_BAR_BATTERY, 0, UserHandle.USER_CURRENT);
 
-        mActivated = (batteryStyle == BatteryController.BATTERY_STYLE_CIRCLE || batteryStyle ==
-                BatteryController.BATTERY_STYLE_CIRCLE_PERCENT || batteryStyle ==
-                BatteryController.BATTERY_STYLE_DOTTED_CIRCLE_PERCENT);
-        mPercentage = (batteryStyle == BatteryController.BATTERY_STYLE_CIRCLE_PERCENT
-                || batteryStyle == BatteryController.BATTERY_STYLE_DOTTED_CIRCLE_PERCENT);
+        mActivated = (batteryStyle == BatteryController.BATTERY_STYLE_CIRCLE
+                || batteryStyle == BatteryController.BATTERY_STYLE_CIRCLE_PERCENT);
+        mPercentage = (batteryStyle == BatteryController.BATTERY_STYLE_CIRCLE_PERCENT);
 
         updateVisibility();
     }
@@ -256,29 +241,11 @@ public class CircleBattery extends ImageView implements BatteryController.Batter
         canvas.drawArc(drawRect, 270 + animOffset, 3.6f * level, false, usePaint);
         // if chosen by options, draw percentage text in the middle
         // always skip percentage when 100, so layout doesnt break
-<<<<<<< HEAD
         if (unknownStatus) {
             mPaintFont.setColor(usePaint.getColor());
             canvas.drawText("?", textX, mTextY, mPaintFont);
         } else if (level < 100 && mPercentage) {
             mPaintFont.setColor(usePaint.getColor());
-=======
-        if (level < 100 && mPercentage) {
-            if (level <= 14) {
-                mPaintFont.setColor(mPaintRed.getColor());
-            } else {
-                mPaintFont.setColor(mCircleTextColor);
-            }
-
-            usePaint.setAntiAlias(true);
-            if (batteryStyle == BatteryController.BATTERY_STYLE_DOTTED_CIRCLE_PERCENT) {
-                // change usePaint from solid to dashed
-                usePaint.setPathEffect(new DashPathEffect(new float[]{3,2},0));
-            }else {
-                usePaint.setPathEffect(null);
-            }
-
->>>>>>> d515d3c... Port Dotted Circle Battery (1/2)
             canvas.drawText(Integer.toString(level), textX, mTextY, mPaintFont);
         }
 
@@ -337,7 +304,7 @@ public class CircleBattery extends ImageView implements BatteryController.Batter
 
         mPaintFont.setTextSize(mCircleSize / 2f);
 
-        float strokeWidth = mCircleSize / 7f;
+        float strokeWidth = mCircleSize / 6.5f;
         mPaintRed.setStrokeWidth(strokeWidth);
         mPaintSystem.setStrokeWidth(strokeWidth);
         mPaintGray.setStrokeWidth(strokeWidth / 3.5f);
@@ -370,15 +337,12 @@ public class CircleBattery extends ImageView implements BatteryController.Batter
                 com.android.systemui.R.drawable.stat_sys_wifi_signal_4_fully);
         final int x = measure.getWidth() / 2;
 
-        mCircleSize = measure.getHeight();
-        
-        /*
         mCircleSize = 0;
         for (int y = 0; y < measure.getHeight(); y++) {
             int alpha = Color.alpha(measure.getPixel(x, y));
             if (alpha > 5) {
                 mCircleSize++;
             }
-        } */
+        }
     }
 }
