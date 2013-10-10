@@ -64,22 +64,8 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
     private static final int AM_PM_STYLE_NORMAL  = 0;
     private static final int AM_PM_STYLE_SMALL   = 1;
     private static final int AM_PM_STYLE_GONE    = 2;
-<<<<<<< HEAD
 
     private int mAmPmStyle = AM_PM_STYLE_GONE;
-=======
-    private static final int PROTEKK_O_CLOCK     = 3;
-    private static int AM_PM_STYLE = AM_PM_STYLE_GONE;
-
-    public static final int STYLE_HIDE_CLOCK    = 0;
-    public static final int STYLE_CLOCK_RIGHT   = 1;
-    public static final int STYLE_CLOCK_CENTER  = 2;
-
-    protected int mClockStyle = STYLE_CLOCK_RIGHT;
-
-    private int mAmPmStyle;
-    private boolean mShowClock;
->>>>>>> 8bd6457... SystemUI: Clock - right/center/off (Part 1 of 2)
 
     Handler mHandler;
 
@@ -94,7 +80,6 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
                     Settings.System.STATUS_BAR_AM_PM), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_CLOCK), false, this);
-            updateSettings();
         }
 
         void unobserve() {
@@ -116,7 +101,6 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
 
     public Clock(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-<<<<<<< HEAD
 
         mHandler = new Handler();
         mObserver = new SettingsObserver(mHandler);
@@ -125,8 +109,6 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
             setOnLongClickListener(this);
         }
         updateSettings();
-=======
->>>>>>> 8bd6457... SystemUI: Clock - right/center/off (Part 1 of 2)
     }
 
     public void setHidden(boolean hidden) {
@@ -159,10 +141,7 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
         mCalendar = Calendar.getInstance(TimeZone.getDefault());
 
         // Make sure we update to the current time
-        //updateClock();
-        SettingsObserver settingsObserver = new SettingsObserver(new Handler());
-        settingsObserver.observe();
-        updateSettings();
+        updateClock();
     }
 
     @Override
@@ -277,22 +256,15 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
         int amPmStyle = Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.STATUS_BAR_AM_PM, 2, UserHandle.USER_CURRENT);
 
-<<<<<<< HEAD
         if (mAmPmStyle != amPmStyle) {
             mAmPmStyle = amPmStyle;
-=======
-        mAmPmStyle = (Settings.System.getInt(resolver,
-                Settings.System.STATUS_BAR_AM_PM, 2));
-        mClockStyle = Settings.System.getInt(resolver,
-                Settings.System.STATUS_BAR_CLOCK, STYLE_CLOCK_RIGHT);
-
-        if (mAmPmStyle != AM_PM_STYLE) {
-            AM_PM_STYLE = mAmPmStyle;
->>>>>>> 8bd6457... SystemUI: Clock - right/center/off (Part 1 of 2)
             mClockFormatString = "";
+
+            if (mAttached) {
+                updateClock();
+            }
         }
 
-<<<<<<< HEAD
         updateVisibility();
     }
 
@@ -342,17 +314,6 @@ public class Clock extends TextView implements OnClickListener, OnLongClickListe
 
         // consume event
         return true;
-=======
-        updateClockVisibility();
-        updateClock();
-    }
-
-    protected void updateClockVisibility() {
-        if (mClockStyle == STYLE_CLOCK_RIGHT)
-            setVisibility(View.VISIBLE);
-        else
-            setVisibility(View.GONE);
->>>>>>> 8bd6457... SystemUI: Clock - right/center/off (Part 1 of 2)
     }
 }
 
